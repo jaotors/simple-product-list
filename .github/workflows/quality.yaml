@@ -1,0 +1,47 @@
+name: 'Quality'
+
+on:
+  push:
+    branches: [master, main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v3
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          node-version: 18.17.0
+
+      - name: Installing dependencies
+        run: |
+          yarn install
+      
+      - name: Run React Testing Library
+        run: |
+          yarn test --watchAll=false
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v3
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          node-version: 18.17.0
+
+      - name: Installing dependencies
+        run: |
+          yarn install
+      
+      - name: Run Next Lint
+        run: |
+          yarn next lint
+
