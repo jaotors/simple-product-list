@@ -1,6 +1,5 @@
 'use client'
 
-import { MouseEvent, MouseEventHandler } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -29,9 +28,10 @@ const ProductCard = ({
 }: Props) => {
   const hasDiscount = discountPercentage > 0
   const discountedPrice = price - price * (discountPercentage / 100)
+  const isOutOfStock = 0 < 1
 
   return (
-    <Link href="id/notfound">
+    <Link href="id/notfound" aria-disabled={isOutOfStock}>
       <div className="bg-transparent rounded text-[#1b1b1b]">
         <div className="bg-white rounded-t p-4">
           <div className="relative mb-4">
@@ -49,6 +49,13 @@ const ProductCard = ({
                 <HeartIcon className="w-3.5 h-3.5" />
               </button>
             </div>
+            {isOutOfStock && (
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#1b1b1b]">
+                <p className="font-bold text-sm text-white px-2 py-1">
+                  Out of stock
+                </p>
+              </div>
+            )}
           </div>
           <div className="text-left mb-4">
             <h3 className="text-[#606060]">{category}</h3>
@@ -76,7 +83,8 @@ const ProductCard = ({
               evt.preventDefault()
               console.log('test')
             }}
-            className="px-4 py-2 w-100 font-medium uppercase"
+            disabled={isOutOfStock}
+            className="px-4 py-2 w-100 font-medium uppercase disabled:text-[#606060]"
           >
             Add to basket
           </button>
