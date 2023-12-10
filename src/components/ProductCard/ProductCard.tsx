@@ -1,11 +1,14 @@
 'use client'
 
+import { useState } from 'react'
+
 import Link from 'next/link'
 import Image from 'next/image'
 
 import Rating from '../Rating'
 
 import { HeartIcon, ShareIcon } from '@heroicons/react/24/outline'
+import { twMerge } from 'tailwind-merge'
 
 type Props = {
   image: string
@@ -26,6 +29,8 @@ const ProductCard = ({
   stock,
   discountPercentage,
 }: Props) => {
+  const [hovered, setHovered] = useState<Boolean>(false)
+
   const hasDiscount = discountPercentage > 0
   const discountedPrice = price - price * (discountPercentage / 100)
   const isOutOfStock = stock < 1
@@ -34,7 +39,12 @@ const ProductCard = ({
     <Link
       href="id/notfound"
       aria-disabled={isOutOfStock}
-      className="shadow-custom"
+      onMouseEnter={() => {
+        setHovered(true)
+      }}
+      onMouseLeave={() => {
+        setHovered(false)
+      }}
     >
       <div className="bg-transparent rounded text-[#1b1b1b]">
         <div className="bg-white rounded-t p-4">
@@ -43,6 +53,7 @@ const ProductCard = ({
               src={image}
               width={268}
               height={268}
+              className={hovered && isOutOfStock ? 'opacity-60' : ''}
               alt={`${title}-product-card`}
             />
             {hasDiscount && (
@@ -58,7 +69,7 @@ const ProductCard = ({
                 <HeartIcon className="w-3.5 h-3.5" />
               </button>
             </div>
-            {isOutOfStock && (
+            {hovered && isOutOfStock && (
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#1b1b1b] z-10">
                 <p className="font-bold text-sm text-white px-2 py-1">
                   Out of stock
@@ -86,7 +97,12 @@ const ProductCard = ({
             </span>
           </div>
         </div>
-        <div className="border-t-[1px] border-t-[#606060] bg-white rounded-b">
+        <div
+          className={twMerge(
+            'border-t-[1px] border-t-[#606060] bg-white rounded-b',
+            hovered ? 'visible' : 'invisible'
+          )}
+        >
           <button
             onClick={evt => {
               evt.preventDefault()
