@@ -4,8 +4,6 @@ import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { ShoppingCartIcon } from '@heroicons/react/24/solid'
 
-import BasketList from './BaksetList'
-
 const BasketPopover = () => {
   return (
     <Popover className="relative">
@@ -33,7 +31,6 @@ const BasketPopover = () => {
                   Clear all
                 </button>
               </div>
-              <BasketList />
               <div className="flex items-center justify-between w-full p-4">
                 <p className="text-md font-black">Total: 10000</p>
                 <button className="border border-gray-800 rounded hover:bg-gray-800 hover:text-white px-6 py-2 uppercase">
