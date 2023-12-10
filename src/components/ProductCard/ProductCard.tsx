@@ -9,7 +9,7 @@ import { HeartIcon, ShareIcon } from '@heroicons/react/24/outline'
 
 type Props = {
   image: string
-  category: string
+  brand: string
   title: string
   price: number
   rating: number
@@ -19,7 +19,7 @@ type Props = {
 
 const ProductCard = ({
   title,
-  category,
+  brand,
   image,
   price,
   rating,
@@ -28,29 +28,38 @@ const ProductCard = ({
 }: Props) => {
   const hasDiscount = discountPercentage > 0
   const discountedPrice = price - price * (discountPercentage / 100)
-  const isOutOfStock = 0 < 1
+  const isOutOfStock = stock < 1
 
   return (
-    <Link href="id/notfound" aria-disabled={isOutOfStock}>
+    <Link
+      href="id/notfound"
+      aria-disabled={isOutOfStock}
+      className="shadow-custom"
+    >
       <div className="bg-transparent rounded text-[#1b1b1b]">
         <div className="bg-white rounded-t p-4">
-          <div className="relative mb-4">
-            <Image src={image} width={268} height={268} alt="product card 1" />
+          <div className="relative mb-4 overflow-hidden max-w-[268px] max-h-[268px]">
+            <Image
+              src={image}
+              width={268}
+              height={268}
+              alt={`${title}-product-card`}
+            />
             {hasDiscount && (
-              <span className="absolute bottom-2 left-2 text-[#da0000] font-bold text-xs">
+              <span className="absolute bottom-2 left-2 text-[#da0000] font-bold text-xs z-10">
                 -{discountPercentage.toFixed(2)}%
               </span>
             )}
-            <div className="absolute bottom-2 right-2 flex flex-col gap-2">
-              <button className="flex items-center justify-center w-10 h-10 rounded-full shadow-custom">
+            <div className="absolute bottom-2 right-2 flex flex-col gap-2 z-10">
+              <button className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-custom">
                 <ShareIcon className="w-3.5 h-3.5" />
               </button>
-              <button className="flex items-center justify-center w-10 h-10 rounded-full shadow-custom">
+              <button className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-custom">
                 <HeartIcon className="w-3.5 h-3.5" />
               </button>
             </div>
             {isOutOfStock && (
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#1b1b1b]">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#1b1b1b] z-10">
                 <p className="font-bold text-sm text-white px-2 py-1">
                   Out of stock
                 </p>
@@ -58,7 +67,7 @@ const ProductCard = ({
             )}
           </div>
           <div className="text-left mb-4">
-            <h3 className="text-[#606060]">{category}</h3>
+            <h3 className="text-[#606060]">{brand}</h3>
             <h2>{title}</h2>
           </div>
           <h2 className="flex gap-2 font-medium text-base mb-4">
